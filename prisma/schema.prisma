@@ -7,12 +7,12 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:r8Fa9AzuDD8v6wAo@db.ldxbxarkcxnvujovtmoo.supabase.co:5432/postgres"
 }
 
 model Product {
   id          Int      @id @default(autoincrement())
-  uid         String   @default(uuid())
+  uid         String   @default(uuid()) @unique
   name        String
   imgUrl      String
   description String
@@ -26,7 +26,7 @@ model Product {
 
 model Farmer {
   id         Int       @id @default(autoincrement())
-  uid        String    @default(uuid())
+  uid        String    @default(uuid()) @unique
   email      String    @unique
   name       String
   created_at DateTime  @default(now())
@@ -36,7 +36,7 @@ model Farmer {
 
 model Customer {
   id         Int      @id @default(autoincrement())
-  uid        String   @default(uuid())
+  uid        String   @default(uuid()) @unique
   email      String   @unique
   name       String
   created_at DateTime @default(now())
@@ -45,7 +45,7 @@ model Customer {
 
 model Order {
   id                 Int       @id @default(autoincrement())
-  uid                String    @default(uuid())
+  uid                String    @default(uuid()) @unique
   cost               Int
   created_at         DateTime  @default(now())
   updated_at         DateTime  @default(now())

@@ -1,3 +1,8 @@
+import { redirect } from "@remix-run/node";
+import { Form } from "@remix-run/react";
+import { signinUser } from "~/lib/auth.server";
+import { getUserDetails } from "~/lib/user.server";
+
 export default function Signin() {
   return (
     <>
@@ -7,7 +12,7 @@ export default function Signin() {
           <p className="text-gray-600 mb-6 text-sm">
             welcome back customer
           </p>
-          <form action="#" method="post" autoComplete="off">
+          <Form action="#" method="post" autoComplete="off">
             <div className="space-y-2">
               <div>
                 <label htmlFor="email" className="text-gray-600 mb-2 block">Email address</label>
@@ -24,17 +29,30 @@ export default function Signin() {
             </div>
             <div className="flex items-center justify-between mt-6">
               <div className="flex items-center">
-                <input type="checkbox" name="remember" id="remember"
+                <input type="checkbox" name="remember" id="remember" disabled
                   className="text-primary focus:ring-0 rounded-sm cursor-pointer" />
                 <label htmlFor="remember" className="text-gray-600 ml-3 cursor-pointer">Remember me</label>
               </div>
-              <a href="#" className="text-primary">Forgot password</a>
+              {/* <a href="#" className="text-primary">Forgot password</a> */}
+            </div>
+            <div className="mb-2" >
+              <p>You are :</p>
+              <div className="flex justify-evenly" >
+                <div>
+                  <input type={'radio'} name='registerAs' value={'farmer'} id="registerAsFarmer" />
+                  <label htmlFor="registerAsFarmer" className="mx-2" >Farmer</label>
+                </div>
+                <div>
+                  <input type={'radio'} name='registerAs' value={'customer'} id="registerAsCustomer" />
+                  <label htmlFor="registerAsCustomer" className="mx-2" >Customer</label>
+                </div>
+              </div>
             </div>
             <div className="mt-4">
               <button type="submit"
                 className="block w-full py-2 text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-roboto font-medium">Login</button>
             </div>
-          </form>
+          </Form>
 
           <div className="mt-6 flex justify-center relative">
             <div className="text-gray-600 uppercase px-3 bg-white z-10 relative">Or login with</div>
@@ -55,3 +73,33 @@ export default function Signin() {
     </>
   )
 }
+
+
+export const action = async (actionData) => {
+  // console.log('actionData :: ', actionData);
+
+  const formData = await actionData.request.formData();
+  const values = Object.fromEntries(formData);
+
+  if (!values.email || !values.password || !values.registerAs) {
+    return {
+      status: false,
+      msg: 'Please enter all the fields'
+    }
+  }
+
+  const authRes = await signinUser(values);
+  console.log('authRes :: ', authRes);
+  
+  if(!authRes.status) {
+    return authRes;
+  }
+
+  const userRes = await getUserDetails(authRes.data?.user?.uid, values.registerAs);
+  console.log('userRes :: ', userRes);
+  if (!userRes.status) {
+    return userRes;
+  }
+
+  return redirect(`/${values.registerAs}/profile/${authRes.data?.user?.uid}`);
+};

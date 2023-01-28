@@ -1,11 +1,15 @@
 import zustand, { create } from "zustand";
 
-export const useAppStateStore = create((set) => ({
-  userAuthenticated: false,
-
-  setUserAuthenticated: (val: string) => set((state: any) => {
+export const useUserStore = create((set) => ({
+  state: false,
+  udata: {},
+  setData: (val) => set((state: any) => {
+    console.log('val :: ', val);
+    
     return {
-      ...state
+      ...state,
+      ...val
     }
-  })
+  }),
+
 }))

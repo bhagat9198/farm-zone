@@ -1,8 +1,12 @@
+import { Link } from "@remix-run/react";
+import { useUserStore } from "~/store/user";
 import { CategoryImg } from "../miscellaneous/img";
 
 
 
 export default function Navbar() {
+  const _useUserStore: any = useUserStore();
+
   return (
     <nav className="bg-gray-800">
       <div className="container flex">
@@ -16,40 +20,47 @@ export default function Navbar() {
           <div
             className="absolute w-full left-0 top-full bg-white shadow-md py-3 divide-y divide-gray-300 divide-dashed opacity-0 group-hover:opacity-100 transition duration-300 invisible group-hover:visible">
             <a href="#" className="flex items-center px-6 py-3 hover:bg-gray-100 transition">
-             <CategoryImg />
-                <span className="ml-6 text-gray-600 text-sm">Sofa</span>
+              <CategoryImg />
+              <span className="ml-6 text-gray-600 text-sm">Sofa</span>
             </a>
             <a href="#" className="flex items-center px-6 py-3 hover:bg-gray-100 transition">
-             <CategoryImg />
-                <span className="ml-6 text-gray-600 text-sm">Terarce</span>
+              <CategoryImg />
+              <span className="ml-6 text-gray-600 text-sm">Terarce</span>
             </a>
             <a href="#" className="flex items-center px-6 py-3 hover:bg-gray-100 transition">
-             <CategoryImg />
-                <span className="ml-6 text-gray-600 text-sm">Bed</span>
+              <CategoryImg />
+              <span className="ml-6 text-gray-600 text-sm">Bed</span>
             </a>
             <a href="#" className="flex items-center px-6 py-3 hover:bg-gray-100 transition">
-             <CategoryImg />
-                <span className="ml-6 text-gray-600 text-sm">office</span>
+              <CategoryImg />
+              <span className="ml-6 text-gray-600 text-sm">office</span>
             </a>
             <a href="#" className="flex items-center px-6 py-3 hover:bg-gray-100 transition">
-             <CategoryImg />
-                <span className="ml-6 text-gray-600 text-sm">Outdoor</span>
+              <CategoryImg />
+              <span className="ml-6 text-gray-600 text-sm">Outdoor</span>
             </a>
             <a href="#" className="flex items-center px-6 py-3 hover:bg-gray-100 transition">
-             <CategoryImg />
-                <span className="ml-6 text-gray-600 text-sm">Mattress</span>
+              <CategoryImg />
+              <span className="ml-6 text-gray-600 text-sm">Mattress</span>
             </a>
           </div>
         </div>
 
         <div className="flex items-center justify-between flex-grow pl-12">
           <div className="flex items-center space-x-6 capitalize">
-            <a href="../index.html" className="text-gray-200 hover:text-white transition">Home</a>
-            <a href="pages/shop.html" className="text-gray-200 hover:text-white transition">Shop</a>
-            <a href="#" className="text-gray-200 hover:text-white transition">About us</a>
-            <a href="#" className="text-gray-200 hover:text-white transition">Contact us</a>
+            <Link to="/" className="text-gray-200 hover:text-white transition">Home</Link>
+            {_useUserStore?.udata?.uType === 'customer' &&
+              <Link to="/shop" className="text-gray-200 hover:text-white transition">Shop</Link>
+            }
+            
+            {_useUserStore?.udata?.uType === 'farmer' &&
+              <Link to="/add-product" className="text-gray-200 hover:text-white transition">Add Product</Link>
+            }
+
+            <Link to="#" className="text-gray-200 hover:text-white transition">About us</Link>
+            <Link to="#" className="text-gray-200 hover:text-white transition">Contact us</Link>
           </div>
-          <a href="#" className="text-gray-200 hover:text-white transition">Login/Register</a>
+          {!_useUserStore.state && <a href="#" className="text-gray-200 hover:text-white transition">Login/Register</a>}
         </div>
       </div>
     </nav>

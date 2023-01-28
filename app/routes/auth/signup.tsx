@@ -1,7 +1,10 @@
+
+import { redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSubmit, useTransition } from "@remix-run/react";
 import { useState } from "react";
 import { useRef } from "react";
 import { addUser, createUser } from "~/lib/auth.server";
+// import { prisma } from "~/lib/supabase";
 
 export default function Signup() {
   const submit = useSubmit();
@@ -9,13 +12,12 @@ export default function Signup() {
   const signupForm = useRef(null);
   const actionRes = useActionData();
   console.log('actionRes :: ', actionRes);
-  
   // const formSubmitHandler = (event) => {
   //   event.preventDefault();
   //   const values = new FormData(signupForm.current);
   //   console.log('values ::: ', values);
-    
-    
+
+
   //   // submit(event.currentTarget, { replace: true });
   // }
 
@@ -27,12 +29,12 @@ export default function Signup() {
           <p className="text-gray-600 mb-6 text-sm">
             Register for new cosutumer
           </p>
-          {actionRes && !actionRes.status && 
+          {actionRes && !actionRes.status &&
             <p className="text-red-600 mb-6 text-sm">
               {actionRes.msg}
             </p>
           }
-          <Form method="post"  autoComplete="off" ref={signupForm} >
+          <Form method="post" autoComplete="off" ref={signupForm} >
             <div className="space-y-2">
               <div>
                 <label htmlFor="name" className="text-gray-600 mb-2 block">Full Name</label>
@@ -62,11 +64,11 @@ export default function Signup() {
                 <p>You are :</p>
                 <div className="flex justify-evenly" >
                   <div>
-                    <input type={'radio'} name='registerAs' value={'Farmer'} id="registerAsFarmer" />
+                    <input type={'radio'} name='registerAs' value={'farmer'} id="registerAsFarmer" />
                     <label htmlFor="registerAsFarmer" className="mx-2" >Farmer</label>
                   </div>
                   <div>
-                    <input type={'radio'} name='registerAs' value={'Customer'} id="registerAsCustomer" />
+                    <input type={'radio'} name='registerAs' value={'customer'} id="registerAsCustomer" />
                     <label htmlFor="registerAsCustomer" className="mx-2" >Customer</label>
                   </div>
                 </div>
@@ -98,9 +100,9 @@ export default function Signup() {
               className="w-1/2 py-2 text-center text-white bg-red-600 rounded uppercase font-roboto font-medium text-sm hover:bg-red-500">google</a>
           </div> */}
 
-          <p className="mt-10 text-center text-gray-600">Already have account? 
-          <Link to={'/auth/signin'}
-            className="text-primary font-semibold">Login now</Link>
+          <p className="mt-10 text-center text-gray-600">Already have account?
+            <Link to={'/auth/signin'}
+              className="text-primary font-semibold">Login now</Link>
           </p>
         </div>
       </div>
@@ -110,18 +112,18 @@ export default function Signup() {
 
 export const action = async (actionData) => {
   // console.log('actionData :: ', actionData);
-  
+
   const formData = await actionData.request.formData();
   const values = Object.fromEntries(formData);
-  // console.log('values :: ', values);
-  // if (values.name || values.email || values.password || !values.confirm || !values.registerAs || !values.aggrement) {
-  //   return {
-  //     status: false,
-  //     msg: 'Please enter all the fields'
-  //   }
-  // }
+  console.log('values :: ', values);
+  if (!values.name || !values.email || !values.password || !values.confirm || !values.registerAs || !values.aggrement) {
+    return {
+      status: false,
+      msg: 'Please enter all the fields'
+    }
+  }
 
-  if(values.password !== values.confirm) {
+  if (values.password !== values.confirm) {
     return {
       status: false,
       msg: 'Passwords didnt match'
@@ -130,11 +132,14 @@ export const action = async (actionData) => {
 
   const res = await createUser(values);
 
-  if(!res.status) {
+  if (!res.status) {
     return res
   }
   const resDb = await addUser(values, res.data)
+  console.log('resDb :: ', resDb);
+  if (!resDb.status) {
+    return resDb
+  }
 
-  
-  return true;
+  return redirect(`/${values.registerAs}/profile/${resDb.data.uid}`);
 };
