@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  uid         String   @default(uuid())
+  name        String
+  imgUrl      String
+  description String
+  farm_name   String
+  price       Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+  Farmer      Farmer?  @relation(fields: [farmerId], references: [id])
+  farmerId    Int?
+}
+
+model Farmer {
+  id         Int       @id @default(autoincrement())
+  uid        String    @default(uuid())
+  email      String    @unique
+  name       String
+  created_at DateTime  @default(now())
+  orders     Order[]
+  products   Product[]
+}
+
+model Customer {
+  id         Int      @id @default(autoincrement())
+  uid        String   @default(uuid())
+  email      String   @unique
+  name       String
+  created_at DateTime @default(now())
+  orders     Order[]
+}
+
+model Order {
+  id                 Int       @id @default(autoincrement())
+  uid                String    @default(uuid())
+  cost               Int
+  created_at         DateTime  @default(now())
+  updated_at         DateTime  @default(now())
+  order_deliver_date DateTime
+  Customer           Customer? @relation(fields: [customerId], references: [id])
+  customerId         Int?
+  Farmer             Farmer?   @relation(fields: [farmerId], references: [id])
+  farmerId           Int?
+  // farmer             Farmer?   @relation(fields: [farmerId], references: [id])
+  // farmerId           Int?
+  // customer           Customer @relation(fields: [customerId], references: [id])
+  // customerId         Int?
+}
+
+// model User {
+//   id      Int     @id @default(autoincrement())
+//   name    String
+//   isAdmin Boolean
+// }
