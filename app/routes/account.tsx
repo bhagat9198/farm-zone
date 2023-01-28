@@ -10,8 +10,6 @@ export default function Account() {
 
   return (
     <>
-    <Header />
-    <Navbar />
     <Breadcrumb />
     <div className="container grid grid-cols-12 items-start gap-6 pt-4 pb-16">
 
@@ -143,8 +141,6 @@ export default function Account() {
       {/* <!-- ./info --> */}
 
     </div>
-    <Footer />
-    <Copyright />
     </>
   )
 }

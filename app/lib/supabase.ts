@@ -3,11 +3,11 @@ import { PrismaClient } from '@prisma/client';
 
 let _supabase = null;
 
-// if (!_supabase) {
-//   const supabaseUrl = process.env.DATABASE_URL;
-//   const supabaseKey = process.env.SUPABASE_KEY
-//   _supabase = createClient(supabaseUrl!, supabaseKey!)
-// }
+if (!_supabase) {
+  const supabaseUrl = process.env.PROJECT_URL;
+  const supabaseKey = process.env.API_KEY
+  _supabase = createClient(supabaseUrl!, supabaseKey!)
+}
 
 export const supabase = _supabase;
 
