@@ -9,9 +9,15 @@ export default function Header() {
   return (
     <header className="py-4 shadow-sm bg-white">
       <div className="container flex items-center justify-between">
-        <Link to="index.html">
+        <Link to="index.html" className="flex justify-center items-center" >
           <div className="w-32" >
             <Logo />
+          </div>
+          <div>
+          <div className="text-3xl text-green-600 font-bold" >
+            FARM - A - Zone
+          </div>
+          <span className="text-base italic" >Lets support our farmers</span>
           </div>
         </Link>
 
