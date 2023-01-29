@@ -8,7 +8,7 @@ export default function Navbar() {
   const _useUserStore: any = useUserStore();
 
   return (
-    <nav className="bg-gray-800">
+    <nav className="bg-gray-800 py-6">
       <div className="container flex">
 
 
@@ -26,8 +26,8 @@ export default function Navbar() {
               </>
             }
 
-            <Link to="#" className="text-gray-200 hover:text-white transition">About us</Link>
-            <Link to="#" className="text-gray-200 hover:text-white transition">Contact us</Link>
+            <Link to="/" className="text-gray-200 hover:text-white transition">About us</Link>
+            <Link to="/" className="text-gray-200 hover:text-white transition">Contact us</Link>
           </div>
           {!_useUserStore.state && <Link to="/auth/signin" className="text-gray-200 hover:text-white transition">Login/Register</Link>}
         </div>

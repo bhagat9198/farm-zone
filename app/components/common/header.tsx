@@ -1,13 +1,15 @@
 import { Form, Link } from "@remix-run/react";
+import { FaUserCircle } from "react-icons/fa";
 import { useUserStore } from "~/store/user";
 import Logo from "../miscellaneous/img";
 
 
 export default function Header() {
   const _useUserStore: any = useUserStore();
-
+  console.log('_useUserStore :: ', _useUserStore);
+  
   return (
-    <header className="py-4 shadow-sm bg-white">
+    <header className="py-4 shadow-sm ">
       <div className="container flex items-center justify-between">
         <Link to="index.html" className="flex justify-center items-center" >
           <div className="w-32" >
@@ -35,24 +37,12 @@ export default function Header() {
 
         {_useUserStore.state &&
           <div className="flex items-center space-x-4">
-            <Link to="#" className="text-center text-gray-700 hover:text-primary transition relative">
-              <div className="text-2xl">
-                <i className="fa-regular fa-heart"></i>
-              </div>
-              <div className="text-xs leading-3">Wishlist</div>
 
-            </Link>
-            <Link to="#" className="text-center text-gray-700 hover:text-primary transition relative">
-              <div className="text-2xl">
-                <i className="fa-solid fa-bag-shopping"></i>
+            <Link to={`${_useUserStore.udata.uType}/profile/${_useUserStore.udata.uid}`} className="text-center text-gray-700 hover:text-primary transition relative flex justify-center items-center">
+              <div className="text-2xl mx-2">
+                <FaUserCircle />
               </div>
-              <div className="text-xs leading-3">Cart</div>
-            </Link>
-            <Link to={`${_useUserStore.udata.utype}/profile/${_useUserStore.udata.uid}`} className="text-center text-gray-700 hover:text-primary transition relative">
-              <div className="text-2xl">
-                <i className="fa-regular fa-user"></i>
-              </div>
-              <div className="text-xs leading-3">Your Profile</div>
+              <div className="text-lg leading-3">Your Profile</div>
             </Link>
           </div>}
       </div>
