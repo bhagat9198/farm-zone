@@ -12,12 +12,14 @@ datasource db {
 
 model Product {
   id          Int      @id @default(autoincrement())
-  uid         String   @default(uuid()) @unique
+  uid         String   @unique @default(uuid())
   name        String
   imgUrl      String
   description String
-  farm_name   String
+  brand_name  String
   price       Int
+  mrp         Int
+  inStock     Boolean
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
   Farmer      Farmer?  @relation(fields: [farmerId], references: [id])
@@ -26,7 +28,7 @@ model Product {
 
 model Farmer {
   id         Int       @id @default(autoincrement())
-  uid        String    @default(uuid()) @unique
+  uid        String    @unique @default(uuid())
   email      String    @unique
   name       String
   created_at DateTime  @default(now())
@@ -36,7 +38,7 @@ model Farmer {
 
 model Customer {
   id         Int      @id @default(autoincrement())
-  uid        String   @default(uuid()) @unique
+  uid        String   @unique @default(uuid())
   email      String   @unique
   name       String
   created_at DateTime @default(now())
@@ -45,7 +47,7 @@ model Customer {
 
 model Order {
   id                 Int       @id @default(autoincrement())
-  uid                String    @default(uuid()) @unique
+  uid                String    @unique @default(uuid())
   cost               Int
   created_at         DateTime  @default(now())
   updated_at         DateTime  @default(now())

@@ -1,4 +1,4 @@
-import { useActionData, useLoaderData } from "@remix-run/react";
+import { useActionData, useLoaderData, useNavigate, useSubmit } from "@remix-run/react";
 import { useEffect } from "react";
 import { UserImg } from "~/components/miscellaneous/img";
 import SideNav from "~/components/miscellaneous/sideNav";
@@ -11,6 +11,20 @@ import { useUserStore } from "~/store/user";
 export default function Profile() {
   let userData = useLoaderData();
   const _useUserStore: any = useUserStore();
+  const navigate = useNavigate();
+
+  const submit = useSubmit();
+
+  // useEffect(() => {
+  //   if (_useUserStore.state) return;
+
+  //   const uid = localStorage.getItem('uid_zone');
+  //   if(!uid) {
+  //     navigate('/auth/signin')
+  //   }
+  //   submit({uid}, { action: '/auth/is-valid-user', method: 'post'}, )
+
+  // }, [_useUserStore.state])
 
   useEffect(() => {
     console.log('userData :: ', userData);
@@ -22,18 +36,22 @@ export default function Profile() {
         state: true,
         udata: { ...userData.data, uType: 'farmer' }
       })
+      localStorage.setItem('uid_zone', userData.data.uid)
+      localStorage.setItem('utype_zone', 'farmer')
     } else {
       _useUserStore?.setData({
         state: false,
         udata: null
       })
+      localStorage.removeItem('uid_zone')
+      localStorage.removeItem('utype_zone')
     }
 
   }, [userData.status])
 
   if (!userData.status) {
     return (
-      <div className="container grid grid-cols-12 items-start gap-6 pt-4 pb-16">
+      <div className="container w-full text-center items-start p-16">
         <p className="text-2xl text-red-400" > {userData.msg} </p>
       </div>
     )

@@ -28,7 +28,7 @@ export const createUser = async (data) => {
 export const addUser = async (userValues, authRes) => {
   try {
     console.log('authRes :: ', authRes);
-    
+
     let user;
     if (userValues.registerAs === 'farmer') {
       user = await _prismaClient.farmer.create({
@@ -48,7 +48,7 @@ export const addUser = async (userValues, authRes) => {
       })
     }
     console.log('user :: ', user);
-    
+
     return {
       status: true,
       data: user
@@ -63,21 +63,32 @@ export const addUser = async (userValues, authRes) => {
 }
 
 export const signinUser = async (data) => {
-  const {email, password} = data;
+  const { email, password } = data;
 
   try {
-    const res =  await supabase.auth.signIn({ email, password })
-    console.log('res :: signin :: ', res);
-    return {
-      status: true,
-      data: res
+    console.log('email, password :: ', email, password);
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    })
+    console.log('data, error :: ', data, error);
+    
+    if (error) {
+      return {
+        status: false, msg: error.message
+      }
+    } else {
+      return {
+        status: true, data: data
+      }
     }
-  } catch(error) {
+
+  } catch (error) {
     console.log('error :: ', error);
     return {
       status: false,
       msg: error.msg
     }
-    
+
   }
 }

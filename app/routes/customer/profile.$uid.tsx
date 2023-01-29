@@ -30,11 +30,15 @@ export default function Profile() {
         state: true,
         udata: { ...userData, uType: 'customer' }
       })
+      localStorage.setItem('uid_zone', userData.uid)
+      localStorage.setItem('utype_zone', 'customer')
     } else {
       _useUserStore?.setData({
         state: false,
         udata: null
       })
+      localStorage.removeItem('uid_zone')
+      localStorage.removeItem('utype_zone')
     }
 
   }, [userData.status])

@@ -28,7 +28,10 @@ export const getUserDetails = async (uid, uType) => {
           uid: uid
         },
         select: {
-          orders: true
+          orders: true,
+          email: true,
+          name: true,
+          uid: true
         }
       })
     }

@@ -10,8 +10,8 @@ export default function Footer() {
             <Logo />
           </div>
             <div className="mr-2">
-              <p className="text-gray-500">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, hic?
+              <p className="text-green-500 font-semibold">
+                Welcome to FarmZone. Support the farmers
               </p>
             </div>
             <div className="flex space-x-6">

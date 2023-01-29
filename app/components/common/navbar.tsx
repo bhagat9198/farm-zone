@@ -52,15 +52,18 @@ export default function Navbar() {
             {_useUserStore?.udata?.uType === 'customer' &&
               <Link to="/shop" className="text-gray-200 hover:text-white transition">Shop</Link>
             }
-            
+
             {_useUserStore?.udata?.uType === 'farmer' &&
-              <Link to="/add-product" className="text-gray-200 hover:text-white transition">Add Product</Link>
+              <>
+                <Link to="/farmer/add-product" className="text-gray-200 hover:text-white transition">Add Product</Link>
+                <Link to="/farmer/your-products" className="text-gray-200 hover:text-white transition">Your Products</Link>
+              </>
             }
 
             <Link to="#" className="text-gray-200 hover:text-white transition">About us</Link>
             <Link to="#" className="text-gray-200 hover:text-white transition">Contact us</Link>
           </div>
-          {!_useUserStore.state && <a href="#" className="text-gray-200 hover:text-white transition">Login/Register</a>}
+          {!_useUserStore.state && <Link to="/auth/signin" className="text-gray-200 hover:text-white transition">Login/Register</Link>}
         </div>
       </div>
     </nav>

@@ -14,3 +14,9 @@ export function UserImg() {
   return <img src={userImg} alt="user img" className="rounded-full w-14 h-14 border border-gray-200 p-1 object-cover" />
 }
 
+// export function addProductImg() { 
+//   return <img src={userImg} alt="user img" className="rounded-full w-14 h-14 border border-gray-200 p-1 object-cover" />
+// }
+
+
+

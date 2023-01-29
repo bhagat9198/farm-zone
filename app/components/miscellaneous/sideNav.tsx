@@ -1,12 +1,26 @@
+import { useNavigate } from "@remix-run/react";
 import { supabase } from "~/lib/supabase";
+import { useUserStore } from "~/store/user";
 import { UserImg } from "./img";
 
 export default function SideNav(props) {
   const { uData } = props;
+  const _useUserStore: any = useUserStore();
+  const navigate = useNavigate();
 
   const logoutHandler = async () => {
     try {
-      await supabase.auth.signOut().catch(console.error);
+      const {data, error} =  await supabase.auth.signOut().catch(console.error);
+      console.log('data :: error :: ', data, error);
+      if(!error) {
+        localStorage.removeItem('uid_zone')
+        localStorage.removeItem('utype_zone')
+        _useUserStore.setData({
+          state: false,
+          udata: null
+        })
+        navigate('/auth/signin')
+      }
     } catch (error) {
       console.log('error :: ', error);
     }

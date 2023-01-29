@@ -85,7 +85,7 @@ export default function Signup() {
             <div className="mt-4">
               <button type="submit"
                 className="block w-full py-2 text-center bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-roboto font-medium">
-                {transition.state === "submitting" ? 'Creating Your Account' : 'Create Your Account'} </button>
+                {transition.state === "submitting" ? 'Creating...' : 'Create Your Account'} </button>
             </div>
           </Form>
 
