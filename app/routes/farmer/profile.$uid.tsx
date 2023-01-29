@@ -15,16 +15,6 @@ export default function Profile() {
 
   const submit = useSubmit();
 
-  // useEffect(() => {
-  //   if (_useUserStore.state) return;
-
-  //   const uid = localStorage.getItem('uid_zone');
-  //   if(!uid) {
-  //     navigate('/auth/signin')
-  //   }
-  //   submit({uid}, { action: '/auth/is-valid-user', method: 'post'}, )
-
-  // }, [_useUserStore.state])
 
   useEffect(() => {
     console.log('userData :: ', userData);
@@ -63,39 +53,56 @@ export default function Profile() {
         <SideNav uData={{ ...userData, uType: 'farmer' }} />
 
         <div className="col-span-9 shadow rounded px-6 pt-5 pb-7">
-          <h4 className="text-lg font-medium capitalize mb-4">
-            Profile information
-          </h4>
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="mr-4" htmlFor="first">First name</label>
-                <input type="text" name="first" id="first" className="font-semibold input-box" value={_useUserStore.udata.name} readOnly />
-              </div>
-              <div>
-                <label className="mr-4" htmlFor="last">Last name</label>
-                <input type="text" name="last" id="last" className="font-semibold input-box" value={_useUserStore.udata.name} readOnly />
-              </div>
+          <div>
+            <h4 className="text-lg font-medium capitalize mb-4">
+              Profile information
+            </h4>
+            <div>
+              <label className="mr-4" htmlFor="first">First name</label>
+              <input type="text" name="first" id="first" className="font-semibold input-box w-full" value={_useUserStore.udata.name} readOnly />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="mr-4" htmlFor="email">Email Address</label>
-                <input type="email" name="email" id="email" className="font-semibold input-box" value={_useUserStore.udata.email} readOnly />
-              </div>
-              {/* <div>
-                <label htmlFor="phone">Phone number</label>
-                <input type="text" name="phone" id="phone" className="input-box" />
-              </div> */}
+            <div className="w-full my-4">
+              <label className="mr-4" htmlFor="email">Email Address</label>
+              <input type="email" name="email" id="email" className="font-semibold w-full" value={_useUserStore.udata.email} readOnly />
             </div>
           </div>
 
-          {/* <div className="mt-4">
-            <button type="submit"
-              className="py-3 px-4 text-center text-white bg-primary border border-primary rounded-md hover:bg-transparent hover:text-primary transition font-medium">save
-              changes</button>
-          </div> */}
+
+          <div>
+            <div className="mt-10 mb-5" >
+              <h4 className="text-lg font-medium capitalize mb-4">
+                Orders information
+              </h4>
+
+              {userData && userData?.data?.orders && userData?.data?.orders.map(_o => (
+                <div className="flex justify-center items-center" >
+                  <div className="shadow rounded bg-white px-4 pt-6 pb-8 my-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-medium text-gray-800 text-lg">Order Id: ${_o.uid}</h3>
+                      <a href="#" className="text-primary">Edit</a>
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="text-gray-700 font-medium">Total Cost : {_o.cost}</h4>
+                      <p className="text-gray-800">Quantity : {_o.qty}</p>
+                      <p className="text-gray-800">Product : {_o.productId}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="text-gray-700 font-medium">{_o.address}</h4>
+                      <p className="text-gray-800">{_o.city}</p>
+                      <p className="text-gray-800">{_o.state}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="text-gray-700 font-medium">Delivery Date : {new Date(_o.order_deliver_date).toLocaleDateString()}</h4>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
+
 
       </div>
     </>
@@ -115,5 +122,5 @@ export async function loader({ params }) {
     data: res.data
   }
 
-  return true;
+
 }

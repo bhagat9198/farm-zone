@@ -25,7 +25,8 @@ const YourProducts = () => {
   return (<>
     <div className="w-full mx-20 " >
       {prods && prods.status && prods.data.map(_p => (
-        <div className="bg-white shadow rounded-2xl boder border-gray-300 my-4 ">
+        <div className="my-4 py-2" >
+        <div className="bg-white shadow rounded-2xl boder border-gray-300">
           <div className="flex " >
             <div className="relative ">
               <img src={`https://ldxbxarkcxnvujovtmoo.supabase.co/storage/v1/object/public/prods/${_p.imgUrl}`} alt="product 1" className="w-72 h-52 cover" />
@@ -44,19 +45,27 @@ const YourProducts = () => {
                   <p className="text-xl text-primary font-semibold">₹{_p.price}</p>
                   <p className="text-sm text-gray-400 line-through">₹{_p.mrp}</p>
                 </div>
+                <div className="flex items-baseline mb-1 space-x-2">
+                  <p className="text-xl text-primary font-semibold">{_p.description}</p>
+                    <p className="text-sm text-gray-400 line-through">Created At : {new Date(_p.created_at).toLocaleDateString()}</p>
+                </div>
+                <div className="flex items-baseline mb-1 space-x-2">
+                  <p className="text-xl text-primary font-semibold">{_p.uid}</p>
+                </div>
               </div>
               <div className="flex justify-around items-center w-full" >
                 <button onClick={() => deleteProd(_p.uid)}
-                  className="mx-4 block py-1 w-full text-center text-black font-bold bg-red-400 border border-red-800 rounded-lg">
+                  className="mx-4 block py-2 w-full text-center text-black font-bold bg-red-400 border border-red-800 rounded-lg">
                   Delete
                 </button>
                 <Link to={`/farmer/edit-product/${_p.uid}`}
-                  className="mx-4 block py-1 w-full text-center text-black font-bold bg-green-400 border border-green-800 rounded-lg">
+                  className="mx-4 block py-2 w-full text-center text-black font-bold bg-green-400 border border-green-800 rounded-lg">
                   Edit
                 </Link>
               </div>
             </div>
           </div>
+        </div>
         </div>
       ))}
     </div>
@@ -64,9 +73,9 @@ const YourProducts = () => {
 }
 
 export const action = async (actionData) => {
-  console.log('actionData :: ', actionData);
-
-  if(actionData.method === 'post') {
+  console.log('actionData :: ', actionData.method);
+  
+  if (actionData.request.method === 'POST') {
     const formData = await actionData.request.formData();
     const values = Object.fromEntries(formData);
   
@@ -76,7 +85,7 @@ export const action = async (actionData) => {
       return dbRes
     }
     return dbRes;
-  } else if(actionData.method === 'delete') {
+  } else if (actionData.request.method === 'DELETE') {
     const formData = await actionData.request.formData();
     const values = Object.fromEntries(formData);
 
@@ -87,6 +96,7 @@ export const action = async (actionData) => {
     }
     return dbRes;
   }
+  return true;
 }
 
 export default YourProducts;

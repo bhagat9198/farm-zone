@@ -34,7 +34,6 @@ const AddProduct = () => {
     }
   }
 
-
   return (
     <>
       {prodAction && prodAction.status &&

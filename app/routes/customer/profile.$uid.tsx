@@ -12,26 +12,20 @@ export default function Profile() {
   // const { setData, state, udata } = _useUserStore;
 
   let userData = useLoaderData();
-  if (!userData.status) {
-    return (
-      <div className="container grid grid-cols-12 items-start gap-6 pt-4 pb-16">
-        <p className="text-2xl text-red-400" > {userData.msg} </p>
-      </div>
-    )
-  } else {
-    userData = userData.data;
-  }
+
 
   useEffect(() => {
-    if (_useUserStore.state === userData.status) return;
+    console.log('userData :: ', userData);
+
+    // if (_useUserStore.state === userData.status) return;
 
     if (userData.status) {
       _useUserStore?.setData({
         state: true,
-        udata: { ...userData, uType: 'customer' }
+        udata: { ...userData.data, uType: 'customer' }
       })
-      localStorage.setItem('uid_zone', userData.uid)
-      localStorage.setItem('utype_zone', 'customer')
+      localStorage.setItem('uid_zone', userData.data.uid)
+      localStorage.setItem('utype_zone', 'farmer')
     } else {
       _useUserStore?.setData({
         state: false,
@@ -43,57 +37,67 @@ export default function Profile() {
 
   }, [userData.status])
 
+  if (!userData.status) {
+    return (
+      <div className="container grid grid-cols-12 items-start gap-6 pt-4 pb-16">
+        <p className="text-2xl text-red-400" > {userData.msg} </p>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="container grid grid-cols-12 items-start gap-6 pt-4 pb-16">
         <SideNav uData={{ ...userData, uType: 'customer' }} />
 
         <div className="col-span-9 shadow rounded px-6 pt-5 pb-7">
-          <h4 className="text-lg font-medium capitalize mb-4">
-            Profile information
-          </h4>
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="first">First name</label>
-                <input type="text" name="first" id="first" className="input-box" />
-              </div>
-              <div>
-                <label htmlFor="last">Last name</label>
-                <input type="text" name="last" id="last" className="input-box" />
-              </div>
+          <div>
+            <h4 className="text-lg font-medium capitalize mb-4">
+              Profile information
+            </h4>
+            <div>
+              <label className="mr-4" htmlFor="first">First name</label>
+              <input type="text" name="first" id="first" className="font-semibold input-box w-full" value={_useUserStore?.udata?.name} readOnly />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="birthday">Birthday</label>
-                <input type="date" name="birthday" id="birthday" className="input-box" />
-              </div>
-              <div>
-                <label htmlFor="gender">Gender</label>
-                <select name="gender" id="gender" className="input-box">
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                </select>
-              </div>
+            <div className="w-full my-4">
+              <label className="mr-4" htmlFor="email">Email Address</label>
+              <input type="email" name="email" id="email" className="font-semibold w-full" value={_useUserStore?.udata?.email} readOnly />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="email">Email Address</label>
-                <input type="email" name="email" id="email" className="input-box" />
-              </div>
-              <div>
-                <label htmlFor="phone">Phone number</label>
-                <input type="text" name="phone" id="phone" className="input-box" />
-              </div>
-            </div>
-          </div>
 
-          <div className="mt-4">
-            <button type="submit"
-              className="py-3 px-4 text-center text-white bg-primary border border-primary rounded-md hover:bg-transparent hover:text-primary transition font-medium">save
-              changes</button>
+          </div>
+          <div>
+            <div className="mb-5 mt-10" >
+              <h4 className="text-lg font-medium capitalize mb-4">
+                Orders information
+              </h4>
+
+              {userData && userData?.data?.orders && userData?.data?.orders.map(_o => (
+                <div className="flex justify-center items-center" >
+                  <div className="shadow rounded bg-white px-4 pt-6 pb-8 my-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-medium text-gray-800 text-lg">Order Id: ${_o.uid}</h3>
+                      <a href="#" className="text-primary">Edit</a>
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="text-gray-700 font-medium">Total Cost : {_o.cost}</h4>
+                      <p className="text-gray-800">Quantity : {_o.qty}</p>
+                      <p className="text-gray-800">Product : {_o.productId}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="text-gray-700 font-medium">{_o.address}</h4>
+                      <p className="text-gray-800">{_o.city}</p>
+                      <p className="text-gray-800">{_o.state}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="text-gray-700 font-medium">Delivery Date : {new Date(_o.order_deliver_date).toLocaleDateString()}</h4>
+                    </div>
+                  </div>
+                </div>
+              )) }
+            </div>
           </div>
         </div>
+
 
       </div>
     </>

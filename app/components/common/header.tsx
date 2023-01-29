@@ -15,7 +15,7 @@ export default function Header() {
           </div>
         </Link>
 
-        {((!_useUserStore.status || _useUserStore.status) && _useUserStore.udata.utype !== 'farmer') &&
+        {((!_useUserStore.status || _useUserStore.status) && _useUserStore?.udata?.utype !== 'farmer') &&
           <Form method="post" action="/search-product" className="w-full max-w-xl relative flex">
           <span className="absolute left-4 top-3 text-lg text-gray-400">
             <i className="fa-solid fa-magnifying-glass"></i>
@@ -24,7 +24,7 @@ export default function Header() {
             className="w-full border border-primary border-r-0 pl-12 py-3 pr-3 rounded-l-md focus:outline-none"
             placeholder="Search for product you like" />
           <button
-            className="bg-primary border border-primary text-white px-8 rounded-r-md hover:bg-transparent hover:text-primary transition">Search</button>
+            className="bg-primary border border-primary  px-8 rounded-r-md ">Search</button>
         </Form>}
 
         {_useUserStore.state &&

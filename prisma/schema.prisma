@@ -58,6 +58,7 @@ model Order {
   Farmer             Farmer?   @relation(fields: [farmerId], references: [id])
   farmerId           Int?
   Product            Product   @relation(fields: [productId], references: [id])
+  productId          Int
   address            String
   city               String
   state              String
@@ -66,7 +67,7 @@ model Order {
   // farmerId           Int?
   // customer           Customer @relation(fields: [customerId], references: [id])
   // customerId         Int?
-  productId          Int
+  qty                String
 }
 
 // model User {

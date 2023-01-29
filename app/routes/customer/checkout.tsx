@@ -23,8 +23,10 @@ export default function Checkout() {
       }
       <Form method="post" className="container grid grid-cols-12 items-start pb-16 pt-4 gap-6 mx-10">
         <input type="text" name="customerId" value={_useUserStore.udata.uid} hidden />
-        <input type="text" name="farmId" value={_useProdStore.checkout[0].Farmer.uid} hidden />
-        <input type="text" name="prodId" value={_useProdStore.checkout[0].uid} hidden />
+        <input type="text" name="farmId" value={_useProdStore?.checkout?.[0]?.Farmer?.uid} hidden />
+        <input type="text" name="prodId" value={_useProdStore?.checkout?.[0]?.uid} hidden />
+        <input type="text" name="cost" value={_useProdStore?.checkout?.[0]?.price} hidden />
+        <input type="text" name="qty" value={_useProdStore?.checkout?.[0]?.qty} hidden />
         <div className="col-span-8 border border-gray-200 p-4 rounded">
           <h3 className="text-lg font-medium capitalize mb-4">Order Details</h3>
           <div className="space-y-4">
@@ -55,16 +57,16 @@ export default function Checkout() {
         <div className="col-span-4 border border-gray-200 p-4 rounded">
           <h4 className="text-gray-800 text-lg mb-4 font-medium uppercase">Order summary</h4>
           <div>
-            <img src={`https://ldxbxarkcxnvujovtmoo.supabase.co/storage/v1/object/public/prods/${_useProdStore.checkout[0].imgUrl}`} className="h-20 w-20" />
+            <img src={`https://ldxbxarkcxnvujovtmoo.supabase.co/storage/v1/object/public/prods/${_useProdStore?.checkout[0]?.imgUrl}`} className="h-20 w-20" />
           </div>
           <div className="space-y-2">
             <div className="flex justify-between">
               <div>
-                <h5 className="text-gray-800 font-medium">{_useProdStore.checkout[0].name}</h5>
-                <p className="text-sm text-gray-600">Qty: ${_useProdStore.checkout[0].qty}</p>
+                <h5 className="text-gray-800 font-medium">{_useProdStore?.checkout[0]?.name}</h5>
+                <p className="text-sm text-gray-600">Qty: {_useProdStore?.checkout[0]?.qty}</p>
               </div>
 
-              <p className="text-gray-800 font-medium">₹{_useProdStore.checkout[0].price}</p>
+              <p className="text-gray-800 font-medium">₹{_useProdStore?.checkout[0].price}</p>
             </div>
           </div>
 

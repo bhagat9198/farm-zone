@@ -99,7 +99,7 @@ export default function SideNav(props) {
         }
 
         <div className="space-y-1 pl-8 pt-4">
-          <button onClick={logoutHandler} className="text-red-500 font-bold bg-red-100 px-10 py-2 rounded-md relative hover:text-primary block font-medium capitalize transition">
+          <button onClick={logoutHandler} className="text-red-500 font-bold bg-red-100 px-10 py-2 rounded-md relative hover:text-primary block capitalize transition">
             <span className="absolute -left-8 top-0 text-base">
               <i className="fa-solid fa-right-from-bracket"></i>
             </span>
