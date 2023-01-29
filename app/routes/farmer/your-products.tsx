@@ -1,6 +1,6 @@
-import { Form, useActionData, useSubmit } from "@remix-run/react";
+import { Form, Link, useActionData, useSubmit } from "@remix-run/react";
 import { useEffect } from "react";
-import { getAllFarmerProds } from "~/lib/product.server";
+import { deleteProd, getAllFarmerProds } from "~/lib/product.server";
 
 const YourProducts = () => {
   const submit = useSubmit();
@@ -14,6 +14,12 @@ const YourProducts = () => {
     formData.append('uid', uid)
     submit(formData, { method: 'post', action: '/farmer/your-products' })
   }, [])
+
+  const deleteProd = async(uid) => {
+    let formData = new FormData();
+    formData.append('uid', uid)
+    submit(formData, {method: 'delete'})
+  }
 
   // return <></>
   return (<>
@@ -29,24 +35,26 @@ const YourProducts = () => {
               </div>
             </div>
             <div className="mx-24 w-full flex flex-col justify-between" >
-            <div className="p-4">
-              <a href="#">
-                <h4 className="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
-                  ${_p.name}</h4>
-              </a>
-              <div className="flex items-baseline mb-1 space-x-2">
-                <p className="text-xl text-primary font-semibold">₹{_p.price}</p>
-                <p className="text-sm text-gray-400 line-through">₹{_p.mrp}</p>
+              <div className="p-4">
+                <a href="#">
+                  <h4 className="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+                    ${_p.name}</h4>
+                </a>
+                <div className="flex items-baseline mb-1 space-x-2">
+                  <p className="text-xl text-primary font-semibold">₹{_p.price}</p>
+                  <p className="text-sm text-gray-400 line-through">₹{_p.mrp}</p>
+                </div>
               </div>
-            </div>
-            <div className="flex justify-around items-center w-full" >
-              <button className="mx-4 block py-1 w-full text-center text-white font-bold bg-red-400 border border-primary rounded-b">
-                Delete
-              </button>
-              <button className="mx-4 block py-1 w-full text-center text-white font-bold bg-green-400 border border-primary rounded-b">
-                Edit
-              </button>
-            </div>
+              <div className="flex justify-around items-center w-full" >
+                <button onClick={() => deleteProd(_p.uid)}
+                  className="mx-4 block py-1 w-full text-center text-black font-bold bg-red-400 border border-red-800 rounded-lg">
+                  Delete
+                </button>
+                <Link to={`/farmer/edit-product/${_p.uid}`}
+                  className="mx-4 block py-1 w-full text-center text-black font-bold bg-green-400 border border-green-800 rounded-lg">
+                  Edit
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -58,15 +66,27 @@ const YourProducts = () => {
 export const action = async (actionData) => {
   console.log('actionData :: ', actionData);
 
-  const formData = await actionData.request.formData();
-  const values = Object.fromEntries(formData);
+  if(actionData.method === 'post') {
+    const formData = await actionData.request.formData();
+    const values = Object.fromEntries(formData);
+  
+    const dbRes = await getAllFarmerProds(values.uid);
+    console.log('dbRes :: ', dbRes);
+    if (!dbRes.status) {
+      return dbRes
+    }
+    return dbRes;
+  } else if(actionData.method === 'delete') {
+    const formData = await actionData.request.formData();
+    const values = Object.fromEntries(formData);
 
-  const dbRes = await getAllFarmerProds(values.uid);
-  console.log('dbRes :: ', dbRes);
-  if (!dbRes.status) {
-    return dbRes
+    const dbRes = await deleteProd(values.uid);
+    console.log('dbRes :: ', dbRes);
+    if (!dbRes.status) {
+      return dbRes
+    }
+    return dbRes;
   }
-  return dbRes;
 }
 
 export default YourProducts;

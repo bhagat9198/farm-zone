@@ -149,3 +149,48 @@ export const getProduct = async(pid) => {
     
   }
 }
+
+export const deleteProd = async(uid) => {
+
+  try {
+    const prod = await _prismaClient.product.delete({
+      where: {
+        uid: uid
+      }
+    })
+  } catch(error) {
+    console.log('error :: ', error);
+    return {
+      status: false,
+      msg: error.message
+    }
+  }
+}
+
+export const editProd = async(data) => {
+  try {
+    const prod = await _prismaClient.product.update({
+      where: {
+        uid: data.uid
+      },
+      data: {
+        brand_name: data.brand, description: data.description, imgUrl: data.fileName, inStock: data.inStock, mrp: data.mrp, 
+        price: data.price, name: data.name
+      }
+    })
+    if(prod) {
+      return {
+        status: true, data:prod
+      }
+    }
+    return {
+      status: false, msg: 'Something went wrong'
+    }
+  } catch(error) {
+    console.log('error :: ', error);
+    return {
+      status: false,
+      msg: error.message
+    }
+  }
+}

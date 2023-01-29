@@ -2,10 +2,17 @@ import zustand, { create } from "zustand";
 
 export const useProdStore = create((set) => ({
   prods: [],
-  setProds: (val) => set((state: any) => {
+  checkout: [],
+  setProds: (val) => set((state) => {
     return {
       ...state,
-      ...val
+      prods: val
+    }
+  }),
+  setCheckout: (val) => set((state) => {
+    return {
+      ...state,
+      checkout: val
     }
   }),
 

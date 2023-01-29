@@ -24,6 +24,7 @@ model Product {
   updated_at  DateTime @default(now())
   Farmer      Farmer?  @relation(fields: [farmerId], references: [id])
   farmerId    Int?
+  Order       Order[]
 }
 
 model Farmer {
@@ -56,10 +57,16 @@ model Order {
   customerId         Int?
   Farmer             Farmer?   @relation(fields: [farmerId], references: [id])
   farmerId           Int?
+  Product            Product   @relation(fields: [productId], references: [id])
+  address            String
+  city               String
+  state              String
+  pin                String
   // farmer             Farmer?   @relation(fields: [farmerId], references: [id])
   // farmerId           Int?
   // customer           Customer @relation(fields: [customerId], references: [id])
   // customerId         Int?
+  productId          Int
 }
 
 // model User {

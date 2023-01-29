@@ -1,6 +1,7 @@
-import { Link, useActionData, useLoaderData, useMatches, useSubmit } from "@remix-run/react";
+import { Link, useActionData, useLoaderData, useMatches, useNavigate, useSubmit } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { getProduct } from "~/lib/product.server";
+import { useProdStore } from "~/store/prods";
 
 export default function EachProduct() {
   const loaderData = useLoaderData();
@@ -11,9 +12,12 @@ export default function EachProduct() {
   console.log('loaderData :: ', loaderData);
   console.log('actionData :: ', actionData);
   const submit = useSubmit();
+  const _useProdStore: any = useProdStore();
 
   const mainProd = loaderData?.mainProd;
   const relProds = loaderData?.realted;
+  const navigate = useNavigate();
+
   // useEffect(() => {
   //   if (loaderData.status && loaderData.data[0].name) {
   //     let formData = new FormData();
@@ -29,31 +33,29 @@ export default function EachProduct() {
   const decrementQty = () => {
     if (qty === 1) return;
 
-    setQty(prev => prev--)
+    setQty(prev => --prev)
+  }
+
+  const addToCheckout = async() => {
+    console.log('cjeckout :: ', mainProd.data[0]);
+    
+    _useProdStore.setCheckout([{...mainProd.data[0], qty: qty}])
+    return navigate('/customer/checkout/')
   }
 
   return (
     <>
       {mainProd && !mainProd.status &&
-        <p className="px-10 rounded-lg py-2" >{mainProd?.msg}</p>
+        <p className="px-10 rounded-lg py-2 my-4" >{mainProd?.msg}</p>
       }
-      <div className="container grid grid-cols-2 gap-6">
+      <div className="container grid grid-cols-2 gap-6 my-4 mx-10">
         <div>
           <img src={`https://ldxbxarkcxnvujovtmoo.supabase.co/storage/v1/object/public/prods/${mainProd.data[0].imgUrl}`} alt="product" className="w-full" />
         </div>
 
         <div>
-          <h2 className="text-3xl font-medium uppercase mb-2">{mainProd.data[0].name}</h2>
-          <div className="flex items-center mb-4">
-            <div className="flex gap-1 text-sm text-yellow-400">
-              <span><i className="fa-solid fa-star"></i></span>
-              <span><i className="fa-solid fa-star"></i></span>
-              <span><i className="fa-solid fa-star"></i></span>
-              <span><i className="fa-solid fa-star"></i></span>
-              <span><i className="fa-solid fa-star"></i></span>
-            </div>
-            <div className="text-xs text-gray-500 ml-3">(150 Reviews)</div>
-          </div>
+          <h2 className="text-3xl font-medium uppercase my-2">{mainProd.data[0].name}</h2>
+          
           <div className="space-y-2">
             <p className="text-gray-800 font-semibold space-x-2">
               <span>Availability: </span>
@@ -71,7 +73,7 @@ export default function EachProduct() {
           </div>
 
           <p className="mt-4 text-gray-600">
-            ${mainProd.data[0].description}
+            <span className="font-bold" >Description :</span>   {mainProd.data[0].description}
           </p>
 
           <div className="mt-4">
@@ -83,21 +85,19 @@ export default function EachProduct() {
             </div>
           </div>
 
-          <div className="mt-6 flex gap-3 border-b border-gray-200 pb-5 pt-5">
-            <a href="#"
+          <div className="mt-6 flex gap-3  pb-5 pt-5">
+            <button onClick={addToCheckout}
               className="bg-primary border border-primary px-8 py-2 font-medium rounded uppercase flex items-center gap-2 hover:bg-transparent hover:text-primary transition">
-              <i className="fa-solid fa-bag-shopping"></i> Add to cart
-            </a>
+              <i className="fa-solid fa-bag-shopping"></i> Add to checkout
+            </button>
           </div>
-
-
         </div>
       </div>
 
-      {<div className="container pb-16">
+      {<div className="container py-16 mx-10">
         <h2 className="text-2xl font-medium text-gray-800 uppercase mb-6">Related products</h2>
         {relProds && relProds.status && relProds.data.length === 0 &&
-          <p className="mx-10 rounded-lg py-2 text-red-700 bg-red-200 font-bold" >Didnt found any matching products</p>}
+          <p className=" rounded-lg py-2 text-red-700 bg-red-200 font-bold text-center" >Didnt found any matching products</p>}
         <div className="grid grid-cols-4 gap-6">
           {relProds && relProds.status && relProds.length > 0 &&
             relProds.data.map(_p => (
@@ -127,9 +127,10 @@ export default function EachProduct() {
                     <p className="text-sm text-gray-400 line-through">₹ ${_p.mrp}</p>
                   </div>
                 </div>
-                <a href="#"
-                  className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition">Add
-                  to cart</a>
+                <button onClick={addToCheckout}
+                  className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition">
+                    Checkout
+                </button>
               </div>
             ))}
         </div>

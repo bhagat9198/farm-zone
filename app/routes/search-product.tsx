@@ -29,42 +29,42 @@ const SearchProduct = () => {
 
             {searchProds.data.map(_p =>
               <div className="my-10 p-5 border-2 border-gray-300 rounded-2xl" >
-              <Link to={`/product/${_p.uid}`} className="bg-slate-200  ">
-                <div className="flex " >
-                  <div className="relative ">
-                    <img src={`https://ldxbxarkcxnvujovtmoo.supabase.co/storage/v1/object/public/prods/${_p.imgUrl}`} alt="product 1" className="w-72 h-52 cover" />
-                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center 
+                <Link to={`/product/${_p.uid}`} className="bg-slate-200  ">
+                  <div className="flex " >
+                    <div className="relative ">
+                      <img src={`https://ldxbxarkcxnvujovtmoo.supabase.co/storage/v1/object/public/prods/${_p.imgUrl}`} alt="product 1" className="w-72 h-52 cover" />
+                      <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center 
                         justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
-                    </div>
-                  </div>
-                  <div className="mx-24 w-full flex flex-col justify-between" >
-                    <div className="p-4">
-                      <h4 className="uppercase font-medium text-xl mb-4 text-gray-800 ">
-                        {_p.name}
-                      </h4>
-                      <h4 className="font-medium text-lg mb-2 text-gray-800 ">
-                        {_p.description}
-                      </h4>
-                      <div className="flex items-baseline mb-1 space-x-2">
-                        <p className="text-xl text-primary font-semibold">₹{_p.price}</p>
-                        <p className="text-sm  line-through text-red-500 ">₹{_p.mrp}</p>
-                      </div>
-                      <div className="my-2" >
-                        {_p.inStock && <p className="text-green-600" >In Stock <span className="text-xs mx-3 " >Order fast, before its unavialble</span> </p>}
-                        {!_p.inStock && <p className="text-red-700" >Out of Stock <span className="text-xs mx-3 " >Hard luck!!!</span> </p> }
                       </div>
                     </div>
-                    <div className="flex justify-around items-center w-full" >
-                      <button className="mx-4 block py-1 w-full text-center text-white font-bold bg-violet-500 border border-primary rounded-lg">
-                        Add to Wishlist
-                      </button>
-                      <button className="mx-4 block py-1 w-full text-center text-white font-bold bg-green-400 border border-primary rounded-lg">
-                        Add to Cart
-                      </button>
+                    <div className="mx-24 w-full flex flex-col justify-between" >
+                      <div className="p-4">
+                        <h4 className="uppercase font-medium text-xl mb-4 text-gray-800 ">
+                          {_p.name}
+                        </h4>
+                        <h4 className="font-medium text-lg mb-2 text-gray-800 ">
+                          {_p.description}
+                        </h4>
+                        <div className="flex items-baseline mb-1 space-x-2">
+                          <p className="text-xl text-primary font-semibold">₹{_p.price}</p>
+                          <p className="text-sm  line-through text-red-500 ">₹{_p.mrp}</p>
+                        </div>
+                        <div className="my-2" >
+                          {_p.inStock && <p className="text-green-600" >In Stock <span className="text-xs mx-3 " >Order fast, before its unavialble</span> </p>}
+                          {!_p.inStock && <p className="text-red-700" >Out of Stock <span className="text-xs mx-3 " >Hard luck!!!</span> </p>}
+                        </div>
+                      </div>
+                      <div className="flex justify-around items-center w-full" >
+                        <button className="mx-4 block py-2 w-full text-center text-white font-bold bg-violet-500 border border-primary rounded-lg">
+                          Add to Wishlist (Coming Soon)
+                        </button>
+                        <Link to={`/product/${_p.uid}`} className="mx-4 block py-2 w-full text-center text-white font-bold bg-green-400 border border-primary rounded-lg">
+                          View Product
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
               </div>
             )}
           </div>

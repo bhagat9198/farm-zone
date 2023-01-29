@@ -11,7 +11,7 @@ export default function Footer() {
           </div>
             <div className="mr-2">
               <p className="text-green-500 font-semibold">
-                Welcome to FarmZone. Support the farmers
+                Welcome to FarmZone. <br /> Support the farmers
               </p>
             </div>
             <div className="flex space-x-6">
