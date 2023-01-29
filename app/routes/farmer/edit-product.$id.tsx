@@ -17,13 +17,13 @@ const EditProduct = () => {
   const prodAction = useActionData();
   console.log('prodAction :: ', prodAction);
   const loaderData = useLoaderData();
-
+  console.log('loaderData :: ', loaderData);
+  
   // localStorage.setItem('location_zone', '/farmer/add-product')
 
   const imgChangeHYandler = async (e) => {
     const [file] = e.target.files
     if (file) {
-      console.log('file :: ', file);
       let fName = `${Math.random()}_${file.name}`
       setFileName(fName)
       const { data, error } = await supabase.storage
